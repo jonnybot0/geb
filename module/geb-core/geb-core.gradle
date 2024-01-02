@@ -32,6 +32,12 @@ dependencies {
     testImplementation libs.cglib
     testImplementation libs.jsoup
     testImplementation libs.ratpack.test
+    constraints {
+        testImplementation('io.netty:netty-resolver-dns-native-macos:4.1.100.Final') {
+            because 'Earlier versions of netty resolved by Ratpack break on Apple Silicon'
+        }
+    }
+    testImplementation 'io.netty:netty-resolver-dns-native-macos:4.1.100.Final:osx-aarch_64'
     testImplementation project(":internal:test-support-spock")
 
     sauceConnect libs.sauceConnect
