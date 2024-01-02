@@ -15,7 +15,6 @@
  */
 package geb.driver
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.openqa.selenium.remote.RemoteWebDriver
 import ratpack.test.embed.EmbeddedApp
@@ -34,11 +33,12 @@ class CloudDriverFactorySpec extends Specification {
         it.handlers {
             it.post("session") {
                 it.render(
-                    it.parse(fromJson(NewSessionCommand)).map { command ->
+                    it.parse(fromJson(Object)).map { command ->
                         json(
-                            sessionId: UUID.randomUUID(),
-                            value: command.desiredCapabilities,
-                            status: 0
+                            value: [
+                                sessionId   : UUID.randomUUID(),
+                                capabilities: command["capabilities"]["firstMatch"].first(),
+                            ]
                         )
                     }
                 )
@@ -76,10 +76,4 @@ class CloudDriverFactorySpec extends Specification {
             desiredCapabilities.setCapability(TEST_CAPABILITY_NAME, false)
         }
     }
-
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    private static class NewSessionCommand {
-        Map<String, Object> desiredCapabilities
-    }
-
 }
