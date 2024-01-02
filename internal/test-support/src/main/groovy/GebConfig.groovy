@@ -11,8 +11,6 @@ import org.testcontainers.containers.BrowserWebDriverContainer
 import org.testcontainers.shaded.org.apache.commons.io.FileUtils
 import org.testcontainers.utility.ResourceReaper
 
-import static org.testcontainers.containers.BrowserWebDriverContainer.getDockerImageForCapabilities
-
 testValue = true // used in a test in geb-core
 
 String getForkIndex(int total) {
@@ -26,8 +24,7 @@ void setPortIndexProperty(String index) {
 }
 
 BrowserWebDriverContainer containerForCapabilities(Capabilities capabilities) {
-    new BrowserWebDriverContainer<>(getDockerImageForCapabilities(capabilities, "4.2.2-20220622"))
-        .withCapabilities(capabilities)
+    new BrowserWebDriverContainer<>().withCapabilities(capabilities)
 }
 
 BrowserWebDriverContainer containerForDriver(String driverName) {
