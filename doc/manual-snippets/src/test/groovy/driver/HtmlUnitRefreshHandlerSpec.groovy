@@ -16,7 +16,7 @@
 package driver
 
 // tag::import[]
-import com.gargoylesoftware.htmlunit.ThreadedRefreshHandler
+import org.htmlunit.ThreadedRefreshHandler
 // end::import[]
 import fixture.Browser
 import fixture.DriveMethodSupportingSpecWithServer
