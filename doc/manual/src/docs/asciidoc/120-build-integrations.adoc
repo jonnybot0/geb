@@ -29,7 +29,7 @@ val seleniumVersion = "{selenium-version}"
 
 testing {
     val test by suites.existing(JvmTestSuite::class) {
-        useSpock("2.3-groovy-4.0")
+        useSpock("{spock-core-version}")
 
         dependencies {
             // If using Spock, need to depend on geb-spock
