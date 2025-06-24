@@ -15,6 +15,7 @@
 
 [versions]
 asciidoctorTabs = "1.0.0.beta.6"
+asciidocPlugin = "4.0.4"
 groovy = "4.0.26"
 jetty = "10.0.24"
 junit4 = "4.13.2"
@@ -72,8 +73,8 @@ testng = 'org.testng:testng:7.5.1'
 threeTen-extra = { module = 'org.threeten:threeten-extra', version.ref = 'threeTen' }
 
 [plugins]
-asciidoc = { id = 'org.asciidoctor.jvm.convert' }
-asciidoc-gems = { id = 'org.asciidoctor.jvm.gems' }
+asciidoc = { id = 'org.asciidoctor.jvm.convert', version.ref = 'asciidocPlugin' }
+asciidoc-gems = { id = 'org.asciidoctor.jvm.gems', version.ref = 'asciidocPlugin' }
 asl2 = { id = 'com.energizedwork.asl2', version = '1.1' }
 nexusPublish = { id = 'io.github.gradle-nexus.publish-plugin', version = '2.0.0' }
 node = { id = 'com.github.node-gradle.node', version = '7.1.0' }
