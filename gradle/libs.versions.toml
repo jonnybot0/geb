@@ -15,20 +15,20 @@
 
 [versions]
 asciidoctorTabs = "1.0.0.beta.6"
-groovy = "4.0.26"
+groovy = "4.0.33"
 jetty = "10.0.24"
 junit4 = "4.13.2"
 junit5 = "5.12.0"
 ratpack = "1.10.0-milestone-38"
 sauceConnect = "1.153"
-selenium = "4.34.0"
+selenium = "4.49.0"
 playwright = "1.61.0"
 remote-driver = "3.141.59"
 testcontainers = "1.21.3"
 htmlUnitDriver = "4.13.0"
-spock = "2.3-groovy-4.0"
+spock = "2.4-groovy-4.0"
 threeTen = "1.8.0"
-micronaut = "3.10.1" # Micronaut 3 is still supports Java 11
+micronaut = "3.10.1" # Micronaut 3 still supports Java 11
 
 [libraries]
 asciidoctorj = 'org.asciidoctor:asciidoctorj:2.5.13'
