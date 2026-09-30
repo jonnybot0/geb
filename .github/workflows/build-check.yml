@@ -40,7 +40,7 @@ jobs:
       - name: Check firefox version
         run: /usr/bin/firefox --version
       - name: Install Playwright Chromium
-        run: ./gradlew -Pci --no-daemon :module:geb-direct:installPlaywrightBrowsers
+        run: ./gradlew -Pci --no-daemon :module:geb-playwright:installPlaywrightBrowsers
       - name: Build and run tests
         run: ./gradlew -Pci --no-daemon --no-build-cache check -x rat # rat in separate workflow for fast feedback
         timeout-minutes: 60

@@ -15,7 +15,7 @@ include::020-browser.adoc[]
 
 include::021-driver.adoc[]
 
-include::022-geb-direct.adoc[]
+include::022-geb-playwright.adoc[]
 
 include::030-navigator.adoc[]
 
