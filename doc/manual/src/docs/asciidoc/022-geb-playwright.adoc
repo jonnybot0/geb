@@ -1,0 +1,80 @@
+[[geb-playwright]]
+= Geb Playwright
+
+[WARNING]
+====
+`geb-playwright` is experimental. The artifact, package, and configuration may change or be removed. It is not covered by Geb's compatibility guarantees.
+====
+
+`geb-playwright` is an optional Playwright-backed `WebDriver`. Selenium remains Geb's default. `geb-core` does not depend on Playwright unless you add this module and configure `PlaywrightDriver`.
+
+Existing Geb code — `Browser`, pages, the content DSL, modules, `waitFor`, and reporting — keeps working. The adapter implements the WebDriver calls Geb already makes. It does not re-wrap Playwright's own API.
+
+[[geb-playwright-installation]]
+== Installation
+
+[source,groovy]
+----
+dependencies {
+    testImplementation 'org.apache.groovy.geb:geb-playwright:{geb-version}'
+}
+----
+
+Install the browser once on each machine and CI image:
+
+[source,bash]
+----
+npx playwright install chromium
+----
+
+The module also exposes `./gradlew :module:geb-playwright:installPlaywrightBrowsers`.
+
+[[geb-playwright-configuration]]
+== Configuration
+
+`PlaywrightDriver.config` returns a driver factory, so Geb creates and closes the driver the same way it does for Selenium.
+
+[source,groovy]
+----
+import geb.playwright.PlaywrightDriver
+
+driver = PlaywrightDriver.config {
+    browserType = 'chromium' // firefox or webkit
+    headless = true
+}
+
+cacheDriverPerThread = true
+----
+
+`PlaywrightDriver.create { ... }` builds a driver immediately when you want to manage `quit()` yourself.
+
+`PlaywrightOptions` is the configuration object. The fields that matter for a Geb run are `browserType`, `headless`, `slowMo`, `channel`, `launchArgs`, `viewportWidth`, `viewportHeight`, `ignoreHTTPSErrors`, `baseURL`, `defaultTimeoutMs`, and `navigationTimeoutMs`. The same object can also set context options Playwright only accepts at creation time, including locale, time zone, user agent, permissions, geolocation, headers, HAR recording, HTTP credentials, proxy, video, and tracing.
+
+[[geb-playwright-webdriver]]
+== What the adapter implements
+
+`PlaywrightWebDriver` implements `WebDriver`, `JavascriptExecutor`, `TakesScreenshot`, `HasCapabilities`, and the Actions `Interactive` contract. Locator actions use Playwright's actionability checks. Each driver owns one `BrowserContext`.
+
+`driver.manage().logs()` is unsupported. Window position is remembered for WebDriver callers, but Playwright cannot move or minimize native browser chrome. Alerts are best-effort because Playwright delivers dialogs as events. Selenium Grid, `RemoteWebDriver`, browser profiles, extensions, and BiDi are not provided.
+
+Playwright Java is not thread-safe. Do not share a driver, context, or page across threads. Use `cacheDriverPerThread = true` when workers run in parallel.
+
+[[geb-playwright-playwright-api]]
+== Playwright features
+
+Cast the Geb driver when a test needs Playwright itself:
+
+[source,groovy]
+----
+import com.microsoft.playwright.Page
+import com.microsoft.playwright.options.AriaRole
+import geb.playwright.PlaywrightWebDriver
+
+def playwrightDriver = browser.driver as PlaywrightWebDriver
+playwrightDriver.page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName('Submit')).click()
+playwrightDriver.context.route('**/api/**') { route -> route.abort() }
+----
+
+Tracing and video are context options (`tracing` and `recordVideo`). `PlaywrightTraceReporter` writes the current trace into a Geb report and starts a new one. Those calls are not portable to a Selenium-backed Geb run.
+
+Module tests can be skipped with `-Dgeb.playwright.skip=true` or `PLAYWRIGHT_SKIP=true`. Skipping tests does not remove the need to install browsers for an application that uses this driver.
